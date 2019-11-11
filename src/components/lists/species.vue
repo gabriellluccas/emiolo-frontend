@@ -3,7 +3,7 @@
         <h3>Species</h3>
         <b-table striped hover :items="species" :fields="fields">
             <template v-slot:cell(url)="data">
-                <a v-bind:href="data.value">for more info click here</a>
+                <b-link :to="{ name: 'specie', params: {id: data.value.match(/(\d+)/)[0], specie: data.item}}" >click here</b-link>
             </template>
         </b-table>
         <b-row>

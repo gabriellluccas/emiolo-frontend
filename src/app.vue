@@ -7,7 +7,7 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
             <b-nav-item :to="{ name: 'species' }">Especies</b-nav-item>
-            <!-- <b-nav-item :to="{ name: 'planets' }">Planetas</b-nav-item> -->
+            <b-nav-item :to="{ name: 'planets' }">Planets</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
