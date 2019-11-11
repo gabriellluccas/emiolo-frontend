@@ -1,5 +1,8 @@
 <template>
     <div>
+        <Navbar/>
+        <b-row align-h="center">
+        <b-col lg='8' md='8'>
         <h3>{{vehicle.name}}</h3>
         <b>Name:</b> {{vehicle.name}}<br>
         <b>Model:</b> {{vehicle.model}}<br>
@@ -29,16 +32,20 @@
                     </b-link>
                 </div>
             </div>        
-        </div>
+        </div>               
+        </b-col>
+        </b-row>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 
+import Navbar from "../interface/navbar";
 export default {
     name: 'vehicle',
-    data(){
+    components: {Navbar},
+data(){
         return {
             loading: true,
             pilots: null,
@@ -51,16 +58,18 @@ export default {
         /* Get Persons */
         if(this.vehicle.pilots){
             this.pilots = await Promise.all(this.vehicle.pilots.map(async element => {
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
                 const id = element.match(/(\d+)/)[0];
-                return await axios.get(`http://localhost:3000/swapi/person/${id}`).then(res => res.data);
+                return await axios.get(`http://localhost:3000/swapi/person/${id}`, headers).then(res => res.data);
             }));
         }
 
         /* Get Films */
         if(this.vehicle.films){
             this.films = await Promise.all(this.vehicle.films.map(async element => {
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
                 const id = element.match(/(\d+)/)[0];
-                return await axios.get(`http://localhost:3000/swapi/film/${id}`).then(res => res.data);
+                return await axios.get(`http://localhost:3000/swapi/film/${id}`, headers).then(res => res.data);
             }));
         }
 

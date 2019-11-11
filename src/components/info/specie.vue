@@ -1,5 +1,8 @@
 <template>
     <div>
+        <Navbar/>
+        <b-row align-h="center">
+        <b-col lg='8' md='8'>
         <h3>{{specie.name}}</h3>
         <b>Name:</b> {{specie.name}}<br>
         <b>Classification:</b> {{specie.classification}}<br>
@@ -39,16 +42,20 @@
                     </b-link>
                 </div>
             </div>        
-        </div>
+        </div>               
+        </b-col>
+        </b-row>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 
+import Navbar from "../interface/navbar";
 export default {
     name: 'specie',
-    data(){
+    components: {Navbar},
+data(){
         return {
             loading: true,
             people: null,
@@ -62,23 +69,26 @@ export default {
         /* Get Persons */
         if(this.specie.people){
             this.people = await Promise.all(this.specie.people.map(async element => {
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
                 const id = element.match(/(\d+)/)[0];
-                return await axios.get(`http://localhost:3000/swapi/person/${id}`).then(res => res.data);
+                return await axios.get(`http://localhost:3000/swapi/person/${id}`, headers).then(res => res.data);
             }));
         }
 
         /* Get Films */
         if(this.specie.films){
             this.films = await Promise.all(this.specie.films.map(async element => {
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
                 const id = element.match(/(\d+)/)[0];
-            return await axios.get(`http://localhost:3000/swapi/film/${id}`).then(res => res.data);
+            return await axios.get(`http://localhost:3000/swapi/film/${id}`, headers).then(res => res.data);
             }));
         }
 
         /* Get Planets */
         if(this.specie.homeworld){
             const id = this.specie.homeworld.match(/(\d+)/)[0];
-            this.homeworld = await axios.get(`http://localhost:3000/swapi/planet/${id}`).then(res => res.data);
+            const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
+            this.homeworld = await axios.get(`http://localhost:3000/swapi/planet/${id}`, headers).then(res => res.data);
         }
 
 

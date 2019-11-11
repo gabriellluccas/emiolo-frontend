@@ -1,5 +1,8 @@
 <template>
     <div>
+        <Navbar/>
+        <b-row align-h="center">
+        <b-col lg='8' md='8'>
         <h3>Planets</h3>
         <b-table striped hover :items="planets" :fields="fields">
             <template v-slot:cell(url)="data">
@@ -12,14 +15,16 @@
             </b-col>
             <b-col>
                 <b-row align-h='end'>
-                    <b-col lg='2'>
+                    <b-col lg='3'>
                         <b-button variant="outline-primary" v-on:click="previousPlanets()">previous</b-button>
                     </b-col>
-                    <b-col lg='2'>
+                    <b-col lg='3'>
                         <b-button variant="outline-primary" v-on:click="nextPlanets()">next</b-button>
                     </b-col>
                 </b-row>
             </b-col>
+        </b-row>
+        </b-col>
         </b-row>
     </div>
 </template>
@@ -28,14 +33,17 @@
 import axios from "axios";
 
 const getPlanets = (component) => {
-    axios.get(`http://localhost:3000/swapi/planets?page=${component.page}`).then((res) => {
+    const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
+    axios.get(`http://localhost:3000/swapi/planets?page=${component.page}`, headers).then((res) => {
         const { results: planets, next:next_page, previous:previous_page, count} = res.data;
         Object.assign(component, {planets, next_page, previous_page, count});
     });
 }
 
+import Navbar from "../interface/navbar";
 export default {
     name: 'planets-list',
+    components: {Navbar},
     data(){
         return {
             planets: null,

@@ -1,5 +1,8 @@
 <template>
     <div>
+        <Navbar/>
+        <b-row align-h="center">
+        <b-col lg='8' md='8'>
         <h3>{{film.title}}</h3>
         <b>Title:</b> {{film.title}}<br>
         <b>Episode:</b> {{film.episode_id}}<br>
@@ -16,16 +19,20 @@
                     </b-link>
                 </div>
             </div>        
-        </div>
+        </div>               
+        </b-col>
+        </b-row>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 
+import Navbar from "../interface/navbar";
 export default {
     name: 'film',
-    data(){
+    components: {Navbar},
+data(){
         return {
             loading: true,
             characters: null
@@ -38,7 +45,8 @@ export default {
         if(this.film.characters){
             this.characters = await Promise.all(this.film.characters.map(async element => {
                 const id = element.match(/(\d+)/)[0];
-                return await axios.get(`http://localhost:3000/swapi/person/${id}`).then(res => res.data);
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
+                return await axios.get(`http://localhost:3000/swapi/person/${id}`, headers, headers).then(res => res.data);
             }));
         }
 
@@ -48,6 +56,6 @@ export default {
 
 </script>
 
-<style lang="stylus">
+<style>
 
 </style>

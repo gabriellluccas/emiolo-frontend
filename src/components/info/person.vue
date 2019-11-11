@@ -1,5 +1,8 @@
 <template>
     <div>
+        <Navbar/>
+        <b-row align-h="center">
+        <b-col lg='8' md='8'>
         <h3>{{person.name}}</h3>
         <b>Name:</b> {{person.name}}<br>
         <b>Gender:</b> {{person.gender}}<br>
@@ -42,17 +45,20 @@
                     </b-link>
                 </div>
             </div>
-        </div>      
-        
+        </div>               
+        </b-col>
+        </b-row>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 
+import Navbar from "../interface/navbar";
 export default {
     name: 'person',
-    data(){
+    components: {Navbar},
+data(){
         return {
             loading: true,
             starships: null,
@@ -67,24 +73,27 @@ export default {
         /* Get Starships */
         if(this.person.starships){
             this.starships = await Promise.all(this.person.starships.map(async element => {
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
                 const id = element.match(/(\d+)/)[0];
-            return await axios.get(`http://localhost:3000/swapi/starship/${id}`).then(res => res.data);
+            return await axios.get(`http://localhost:3000/swapi/starship/${id}`, headers, headers).then(res => res.data);
             }));
         }
 
         /* Get Films */
         if(this.person.films){
             this.films = await Promise.all(this.person.films.map(async element => {
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
                 const id = element.match(/(\d+)/)[0];
-            return await axios.get(`http://localhost:3000/swapi/film/${id}`).then(res => res.data);
+            return await axios.get(`http://localhost:3000/swapi/film/${id}`, headers, headers).then(res => res.data);
             }));
         }
 
         /* Get Species */
         if(this.person.species){
             this.species = await Promise.all(this.person.species.map(async element => {
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
                 const id = element.match(/(\d+)/)[0];
-            return await axios.get(`http://localhost:3000/swapi/specie/${id}`).then(res => res.data);
+            return await axios.get(`http://localhost:3000/swapi/specie/${id}`, headers, headers).then(res => res.data);
             }));
         }
 
@@ -92,7 +101,8 @@ export default {
         if(this.person.vehicles){
             this.vehicles = await Promise.all(this.person.vehicles.map(async element => {
                 const id = element.match(/(\d+)/)[0];
-            return await axios.get(`http://localhost:3000/swapi/vehicle/${id}`).then(res => res.data);
+                const headers = {headers: {'Authorization': `Bearer ${localStorage.token}`}};
+            return await axios.get(`http://localhost:3000/swapi/vehicle/${id}`, headers).then(res => res.data);
             }));
         }
         
@@ -103,6 +113,6 @@ export default {
 
 </script>
 
-<style lang="stylus">
+<style>
 
 </style>
